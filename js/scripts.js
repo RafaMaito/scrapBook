@@ -10,7 +10,7 @@ function createCard(title, data) {
         <h5 class="card-title">${title}</h5>
             <p class="card-text">${data}</p>
             <a href="#" class="btn btn-primary">Editar</a>
-            <a href="#" class="btn btn-danger" onclick="excluirCard(event)">Excluir</a>
+            <a href="#" class="btn btn-danger" onclick="deleteCard(event)">Excluir</a>
         </div>
     </div>
 </div>`;
@@ -37,6 +37,16 @@ buttonCard.addEventListener('click', () => {
 function clearInput() {
   title.value = '';
   contentInput.value = '';
+}
+
+function deleteCard(event) {
+  const target = event.target;
+  const parent = target.parentElement.parentElement;
+  let idx = Array.from(divCards.children).indexOf(parent);
+  cards.splice(idx, 1);
+  divCards.innerHTML = '';
+  showCards();
+  saveLocalStorage();
 }
 
 function showCards() {
