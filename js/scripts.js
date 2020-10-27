@@ -40,14 +40,22 @@ function clearInput() {
 }
 
 function deleteCard(event) {
-  const target = event.target;
-  const parent = target.parentElement.parentElement;
-  let idx = Array.from(divCards.children).indexOf(parent);
+  // const target = event.target;
+  // const parent = target.parentElement.parentElement;
+  const card = event.path[3];
+  let idx = Array.from(divCards.children).indexOf(card);
+  card.remove();
   cards.splice(idx, 1);
-  divCards.innerHTML = '';
   showCards();
   saveLocalStorage();
 }
+
+// function deleteCard(event) {
+//   console.log(event);
+// utilizando path pegando o elemento todos
+//   const card = event.path[4];
+//   card.remove();
+// }
 
 function showCards() {
   for (const item of cards) {
