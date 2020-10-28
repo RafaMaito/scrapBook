@@ -9,7 +9,7 @@ function createCard(title, data) {
         <div class="card-body">
         <h5 class="card-title">${title}</h5>
             <p class="card-text">${data}</p>
-            <a href="#" class="btn btn-primary">Editar</a>
+            <a href="#" class="btn btn-primary" onclick="editCard(event)">Editar</a>
             <a href="#" class="btn btn-danger" onclick="deleteCard(event)">Excluir</a>
         </div>
     </div>
@@ -50,6 +50,11 @@ function deleteCard(event) {
   saveLocalStorage();
 }
 
+function editCard(event) {
+  const card = event.path[1];
+  console.log(card.childNodes[1]);
+}
+
 // function deleteCard(event) {
 //   console.log(event);
 // utilizando path pegando o elemento todos
@@ -58,9 +63,12 @@ function deleteCard(event) {
 // }
 
 function showCards() {
+  divCards.innerHTML = '';
   for (const item of cards) {
     divCards.innerHTML += item;
   }
+  // let idx = Array.from(divCards.children);
+  // console.log(idx.length);
 }
 
 showCards();
