@@ -40,8 +40,6 @@ function clearInput() {
 }
 
 function deleteCard(event) {
-  // const target = event.target;
-  // const parent = target.parentElement.parentElement;
   const card = event.path[3];
   let idx = Array.from(divCards.children).indexOf(card);
   card.remove();
@@ -50,17 +48,37 @@ function deleteCard(event) {
   saveLocalStorage();
 }
 
+let newInput = document.createElement('input');
+let saveButton = document.createElement('button');
+
 function editCard(event) {
   const card = event.path[1];
-  console.log(card.childNodes[1]);
+  newInput.value = card.childNodes[1].textContent;
+  card.childNodes[1].insertAdjacentElement('afterend', newInput);
+  card.childNodes[1].remove();
+  saveButton.innerHTML = 'Salvar';
+  saveButton.setAttribute('onclick', 'saveEdit(event)');
+  saveButton.setAttribute('class', 'btn btn-success');
+  card.appendChild(saveButton);
 }
 
-// function deleteCard(event) {
-//   console.log(event);
-// utilizando path pegando o elemento todos
-//   const card = event.path[4];
-//   card.remove();
-// }
+function saveEdit(event) {
+  const card = event.path[1];
+  const div = event.path[3];
+  card.removeChild(saveButton);
+  var newH5 = document.createElement('h5');
+  newH5.setAttribute('class', card - title);
+  newH5.innerHTML = newInput.value;
+  card.childNodes[1].insertAdjacentElement('afterend', newH5);
+  card.childNodes[1].remove();
+  let newCard = div.outerHTML;
+  console.log(card.childNodes[8]);
+  let idx = Array.from(divCards.children).indexOf(div);
+  cards[idx] = newCard;
+  console.log(cards[idx]);
+  saveLocalStorage();
+  showCards();
+}
 
 function showCards() {
   divCards.innerHTML = '';
