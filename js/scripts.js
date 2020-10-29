@@ -6,11 +6,11 @@ function createCard(title, data) {
   const newCard = `
   <div class="col">
     <div class="card w-50">      
-        <div class="card-body">
+        <div class="card-body d-flex flex-column">
         <h5 class="card-title">${title}</h5>
             <p class="card-text">${data}</p>
-            <a href="#" class="btn btn-primary" onclick="editCard(event)">Editar</a>
-            <a href="#" class="btn btn-danger" onclick="deleteCard(event)">Excluir</a>
+            <a href="#" class="btn btn-primary mb-2" onclick="editCard(event)">Editar</a>
+            <a href="#" class="btn btn-danger mb-2" onclick="deleteCard(event)">Excluir</a>
         </div>
     </div>
 </div>`;
@@ -48,14 +48,21 @@ function deleteCard(event) {
   saveLocalStorage();
 }
 
-let newInput = document.createElement('input');
+let newTitle = document.createElement('input');
+newTitle.setAttribute('class', 'mb-3');
+let newContent = document.createElement('input');
+newContent.setAttribute('class', 'mb-3');
 let saveButton = document.createElement('button');
 
 function editCard(event) {
   const card = event.path[1];
-  newInput.value = card.childNodes[1].textContent;
-  card.childNodes[1].insertAdjacentElement('afterend', newInput);
+  console.log(card.childNodes);
+  newTitle.value = card.childNodes[1].textContent;
+  card.childNodes[1].insertAdjacentElement('afterend', newTitle);
   card.childNodes[1].remove();
+  newContent.value = card.childNodes[3].textContent;
+  card.childNodes[3].insertAdjacentElement('afterend', newContent);
+  card.childNodes[3].remove();
   saveButton.innerHTML = 'Salvar';
   saveButton.setAttribute('onclick', 'saveEdit(event)');
   saveButton.setAttribute('class', 'btn btn-success');
@@ -66,16 +73,22 @@ function saveEdit(event) {
   const card = event.path[1];
   const div = event.path[3];
   card.removeChild(saveButton);
+
   var newH5 = document.createElement('h5');
-  newH5.setAttribute('class', card - title);
-  newH5.innerHTML = newInput.value;
+  newH5.setAttribute('class', 'card-title');
+  newH5.innerHTML = newTitle.value;
   card.childNodes[1].insertAdjacentElement('afterend', newH5);
   card.childNodes[1].remove();
+
+  var newP = document.createElement('p');
+  newP.setAttribute('class', 'card-text');
+  newP.innerHTML = newContent.value;
+  card.childNodes[3].insertAdjacentElement('afterend', newP);
+  card.childNodes[3].remove();
+
   let newCard = div.outerHTML;
-  console.log(card.childNodes[8]);
   let idx = Array.from(divCards.children).indexOf(div);
   cards[idx] = newCard;
-  console.log(cards[idx]);
   saveLocalStorage();
   showCards();
 }
@@ -85,8 +98,6 @@ function showCards() {
   for (const item of cards) {
     divCards.innerHTML += item;
   }
-  // let idx = Array.from(divCards.children);
-  // console.log(idx.length);
 }
 
 showCards();
